@@ -12,7 +12,7 @@ const HeaderCardButton = (props) => {
     0
   );
 
-  const btnClasses = `${classes.button} ${
+  const btnClasses = `${classes.button} ${     
     btnIsHighlighted ? classes.bump : ""
   }`;
 
