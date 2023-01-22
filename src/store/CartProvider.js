@@ -19,11 +19,30 @@ const cartReducer = (state, action) => {
         ...existingCartItem,
         amount: existingCartItem.amount + action.item.amount,
       };
-      updatedItems = [...state.items];
-      updatedItems[existingCartItemIndex] = updateItem
+      updatedItems = [...state.items]; //this is done to not modify the original DB
+      updatedItems[existingCartItemIndex] = updateItem;
     } else {
       updatedItems = state.items.concat(action.item); //concat is similar to push except it doesn't mutate the original array
+    }
+    return {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    };
+  }
 
+  if (action.type === "REMOVE") {
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
+    const existingItem = state.items[existingCartItemIndex];
+    const updatedTotalAmount = state.totalAmount - existingItem.price;
+    let updatedItems;
+    if (existingItem.amount === 1) {
+      updatedItems = state.items.filter((item) => item.id === action.id);
+    } else {
+      const updateItem = { ...existingItem, amount: existingItem.amount - 1 };
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updateItem;
     }
     return {
       items: updatedItems,
